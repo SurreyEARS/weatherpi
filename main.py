@@ -116,17 +116,24 @@ def timestamp_image(t, sensor_vals):
   img = img.resize((1438, 1080))
   emfwm = Image.open('/home/pi/weather/emflogo.jpg')
   earswm = Image.open('/home/pi/weather/earslogo.png')
-  emfwm.thumbnail((149, 149),Image.ANTIALIAS)
+  emfwm.thumbnail((230, 160),Image.ANTIALIAS)
   earswm.thumbnail((325, 149),Image.ANTIALIAS)
-  img.paste(emfwm, (0, 931))
+  img.paste(emfwm, (-30, 931))
   img.paste(earswm, (1113, 931))
   draw = ImageDraw.Draw(img)
   font = ImageFont.truetype('/home/pi/roboto/Roboto-Regular.ttf', 36)
-  draw.text((10, 10), ts_read, (255, 255, 255), font=font)
-  draw.text((10, 46), sensor_str, (255, 255, 255), font=font)
+  outline_text(10, 10, ts_read, draw, font)
+  outline_text(10, 46, sensor_str, draw, font)
   filename = '/home/pi/weather/latest_ts.jpg'
   img.save(filename)
   return filename
+
+def outline_text(x, y, text, draw, font):
+  draw.text((x-1, y-1), text, (0, 0, 0), font=font)
+  draw.text((x-1, y+1), text, (0, 0, 0), font=font)
+  draw.text((x+1, y-1), text, (0, 0, 0), font=font)
+  draw.text((x+1, y+1), text, (0, 0, 0), font=font)
+  draw.text((x, y), text, (255, 255, 255), font=font)
 
 def tweet_pic(status, latest, symbol):  
   ckey = 'igVZ1gE6NZffb9iWSry51tES9'
